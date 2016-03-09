@@ -1,5 +1,3 @@
-# vim: ts=4 sw=4 et ai:
-# -*- coding: utf8 -*-
 """This module implements the TFTP Client functionality. Instantiate an
 instance of the client, and then use its upload or download method. Logging is
 performed via a standard logging object set in TftpShared."""
@@ -31,6 +29,11 @@ class TftpClient(TftpSession):
             tftpassert(int == type(size), "blksize must be an int")
             if size < MIN_BLKSIZE or size > MAX_BLKSIZE:
                 raise TftpException("Invalid blksize: %d" % size)
+        if 'windowsize' in self.options:
+            size = self.options['windowsize']
+            tftpassert(int == type(size), "windowsize must be an int")
+            if size < MIN_WINDOWSIZE or size > MAX_WINDOWSIZE:
+                raise TftpException("Invalid blksize: %d" % size)
 
     def download(self, filename, output, packethook=None, timeout=SOCK_TIMEOUT, retries=DEF_TIMEOUT_RETRIES):
         """This method initiates a tftp download from the configured remote
@@ -41,7 +44,7 @@ class TftpClient(TftpSession):
         form of a TftpPacketDAT object. The timeout parameter may be used to
         override the default SOCK_TIMEOUT setting, which is the amount of time
         that the client will wait for a receive packet to arrive.
-        The retires paramater may be used to override the default DEF_TIMEOUT_RETRIES
+        The retires parameter may be used to override the default DEF_TIMEOUT_RETRIES
         settings, which is the amount of retransmission attemtpts the client will initiate
         after encountering a timeout.
 
@@ -84,7 +87,7 @@ class TftpClient(TftpSession):
         TftpPacketDAT object. The timeout parameter may be used to override
         the default SOCK_TIMEOUT setting, which is the amount of time that
         the client will wait for a DAT packet to be ACKd by the server.
-        The retires paramater may be used to override the default DEF_TIMEOUT_RETRIES
+        The retires parameter may be used to override the default DEF_TIMEOUT_RETRIES
         settings, which is the amount of retransmission attemtpts the client will initiate
         after encountering a timeout.
 

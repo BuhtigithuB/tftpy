@@ -1,5 +1,3 @@
-# vim: ts=4 sw=4 et ai:
-# -*- coding: utf8 -*-
 """This module implements the packet types of TFTP itself, and the
 corresponding encode and decode methods for them."""
 
@@ -179,7 +177,7 @@ class TftpPacketInitial(TftpPacket, TftpPacketWithOptions):
         log.debug("fmt is %s", fmt)
         log.debug("options_list is %s", options_list)
         log.debug("size of struct is %d", struct.calcsize(fmt))
-        
+
         self.buffer = struct.pack(fmt,
                                   self.opcode,
                                   filename,
@@ -485,6 +483,12 @@ class TftpPacketOACK(TftpPacket, TftpPacketWithOptions):
                         options['blksize'] = size
                     else:
                         raise TftpException("blksize %s option outside allowed range" % size)
+                elif name == 'windowsize':
+                    size = int(self.options[name])
+                    if size >= MIN_WINDOWSIZE and size <= MAX_WINDOWSIZE:
+                        log.debug("negotiated windowsize of %d bytes", size)
+                    else:
+                        raise TftpException("windowsize %s option outside allowed range" % size)
                 elif name == 'tsize':
                     size = int(self.options[name])
                     if size < 0:
