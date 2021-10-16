@@ -249,11 +249,11 @@ class TestTftpyState(unittest.TestCase):
             self.clientServerDownloadOptions({'windowsize': windowsize})
 
     def testClientServerBlkRollover(self):
-        tftpy.setLogLevel(logging.ERROR)
+        # tftpy.setLogLevel(logging.ERROR)
         for windowsize in [1, 2, 3, 4]:
             self.clientServerDownloadOptions({'windowsize': windowsize,
                 'blksize': 8})
-        tftpy.setLogLevel(logging.DEBUG)
+        # tftpy.setLogLevel(logging.DEBUG)
 
     def testClientServerUploadNoOptions(self):
         self.clientServerUploadOptions({})
